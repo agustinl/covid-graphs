@@ -8,6 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.0.21",
+    "antd": "^4.13.1",
+    "chart.js": "^2.9.4",
     "next": "10.0.8",
     "react": "17.0.1",
     "react-dom": "17.0.1"
