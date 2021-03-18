@@ -1,130 +1,168 @@
-import React from "react"
-import {
-	Layout,
-	Menu,
-	Row,
-	Col,
-	Statistic,
-	PageHeader,
-	Progress,
-	Divider,
-	Typography } from "antd";
-import {
-    UserOutlined
-} from "@ant-design/icons";
-
-import CasePerDay from '../components/CasePerDay'
-
-const { Content, Footer, Sider } = Layout;
-const { Title, Text } = Typography;
+import React, { useState, useEffect } from "react";
+import Layout from "../components/layout/Layout";
+import ConfirmCases from "../components/ConfirmCases";
+import DeathCases from "../components/DeathsCases";
+import RecoveredCases from "../components/RecoveredCases";
+import Header from "../components/Header";
 
 const Home = ({ data }) => {
+    const [date, setDate] = useState("");
 
-	const recoveredCasePercentage = ((data.recovered * 100) / data.cases).toFixed(2)
-	const deathsCasePercentage = ((data.deaths * 100) / data.cases).toFixed(2)
+    const months = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+    ];
+
+    useEffect(() => {
+        var d = new Date(data.updated);
+        const year = d.getFullYear();
+        const day = d.getDate();
+        const monthIndex = d.getMonth();
+        const monthName = months[monthIndex];
+
+        setDate(day + " de " + monthName + " del " + year);
+    }, []);
+
+	const percentageOfPopulation = ((data.cases * 100) / data.population).toFixed(2);
+    const recoveredCasePercentage = ((data.recovered * 100) / data.cases).toFixed(2);
+    const deathsCasePercentage = ((data.deaths * 100) / data.cases).toFixed(2);
 
     return (
         <Layout>
-            <Sider
-                style={{
-                    overflow: "auto",
-                    height: "100vh",
-                    position: "fixed",
-                    left: 0,
-                }}
-            >
-                <div className="logo">
-					<img src={data.countryInfo.flag} style={{ width: 200 }} />
+
+			<Header
+				update={data.updated}
+				country={data.country}
+				flag={data.countryInfo.flag}
+				population={data.population}
+			/>
+			
+			<section>
+				<div className="leftSide">
+					<h3>Casos Confirmados</h3>
+					<h2>{new Intl.NumberFormat('de-DE').format(data.cases)}</h2>
+					<h3>Activos</h3>
+					<h2>{new Intl.NumberFormat('de-DE').format(data.active)}</h2>
+
+					<div className="new-cases blue">
+						<p>
+							{
+							data.todayCases == 0 ? "Casos de hoy sin reportar" : `+${new Intl.NumberFormat('de-DE').format(data.todayCases)} casos hoy`
+						}
+						</p>
+					</div>
+
+					<div className="per-millon">
+						<h4>{new Intl.NumberFormat('de-DE').format(data.casesPerOneMillion)} <sup>por millon de hab.</sup></h4>
+					</div>
+
+					<div className="status">
+						<p>{percentageOfPopulation}% de la población</p>
+						<div className="progress">
+							<div className="progress-bar" style={{ width: percentageOfPopulation + '%', backgroundColor: '#007bff' }}></div>
+						</div>
+					</div>					
 				</div>
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
-                    <Menu.Item key="1" icon={<UserOutlined />}>
-                        nav 1
-                    </Menu.Item>
-                </Menu>
-            </Sider>
-            <Layout className="site-layout" style={{ marginLeft: 200 }}>
-                <PageHeader
-                    className="site-layout-background"
-					title={data.country}
-    				subTitle={`Ultima actualización: ${data.updated}`}
-                />
-                <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
-                    <div
-                        className="site-layout-background"
-                        style={{ padding: 24, textAlign: "center" }}
-                    >
-						<Row justify="center">
-							<Col span={12}>
-								<Title level={3}>Total de habitantes</Title>
-								<Title level={4}>{(data.population).toLocaleString()}</Title>
-							</Col>
-						</Row>
-						<Divider />
-                        <Row justify="center">
-							<Col span={4}>
-								<Statistic title="Casos Confirmados" value={data.cases} />
-							</Col>
-							<Col span={4}>
-								<Statistic title="Casos Recuperados" value={data.recovered} />
-							</Col>
-							<Col span={4}>
-								<Statistic title="Fallecidos" value={data.deaths} />
-							</Col>
-						</Row>
-						<Divider>% sobre casos confirmados</Divider>
-						<Row justify="center">
-							<Col span={4}></Col>
-							<Col span={4}>
-								<Progress type="circle" width={80} percent={recoveredCasePercentage} status="success" format={percent => `${percent}%`} />
-							</Col>
-							<Col span={4}>
-								<Progress type="circle" width={80} percent={deathsCasePercentage} status="exception" format={percent => `${percent}%`} />
-							</Col>
-						</Row>
-						<Divider>Casos x millon de habitantes</Divider>
-						<Row justify="center">
-							<Col span={6}>
-								<Statistic title="Casos x millon" value={data.casesPerOneMillion} />
-							</Col>
-							<Col span={6}>
-								<Statistic title="Fallecidos x millon" value={data.deathsPerOneMillion} />
-							</Col>
-						</Row>
-						<PageHeader
-							className="site-layout-background"
-							title="Numeros por día"
-							subTitle="Ultimos 30 días"
-						/>
-						<Divider />
-						<CasePerDay />
-                    </div>
-                </Content>
-                <Footer style={{ textAlign: "center" }}>
-                    Ant Design ©2018 Created by Ant UED
-                </Footer>
-            </Layout>
+
+				<div className="rightSide">
+					<ConfirmCases />
+				</div>
+
+			</section>
+			
+			<section>
+				<div className="leftSide">
+					<h3>Fallecidos</h3>
+					<h2>{new Intl.NumberFormat('de-DE').format(data.deaths)}</h2>
+
+					<div className="new-cases red">
+						<p>
+							{
+							data.todayDeaths == 0 ? "Fallecidos de hoy sin reportar" : `+${new Intl.NumberFormat('de-DE').format(data.todayDeaths)} fallecidos hoy`
+						}
+						</p>
+						<p>{new Intl.NumberFormat('de-DE').format(data.critical)} casos criticos</p>
+					</div>
+
+					<div className="per-millon">
+						<h4>{new Intl.NumberFormat('de-DE').format(data.deathsPerOneMillion)} <sup>por millon de hab.</sup></h4>
+					</div>
+
+					<div className="status">
+						<p>{deathsCasePercentage}% de los casos confirmados</p>
+						<div className="progress">
+							<div className="progress-bar" style={{ width: deathsCasePercentage + '%', backgroundColor: '#f00100' }}></div>
+						</div>
+					</div>					
+				</div>
+
+				<div className="rightSide">
+					<DeathCases />
+				</div>
+
+			</section>
+			
+			<section>
+				<div className="leftSide">
+					<h3>Recuperados</h3>
+					<h2>{new Intl.NumberFormat('de-DE').format(data.recovered)}</h2>
+
+					<div className="new-cases green">
+						<p>
+							{
+							data.todayRecovered == 0 ? "Recuperados de hoy sin reportar" : `+${new Intl.NumberFormat('de-DE').format(data.todayRecovered)} recuperados hoy`
+						}
+						</p>
+					</div>
+
+					<div className="status">
+						<p>{recoveredCasePercentage}% de los casos confirmados</p>
+						<div className="progress">
+							<div className="progress-bar" style={{ width: recoveredCasePercentage + '%', backgroundColor: '#41e28f' }}></div>
+						</div>
+					</div>					
+				</div>
+
+				<div className="rightSide">
+					<RecoveredCases />
+				</div>
+
+			</section>
+
+
         </Layout>
     );
 };
 
 export async function getStaticProps(context) {
+    const res = await fetch(
+        `https://corona.lmao.ninja/v3/covid-19/countries/argentina`
+    );
+    const data = await res.json();
 
-	const res = await fetch(`https://corona.lmao.ninja/v3/covid-19/countries/argentina`)
-	const data = await res.json()
+    /* const results = await data.All */
 
-	/* const results = await data.All */
+    if (!data) {
+        return {
+            notFound: true,
+        };
+    }
 
-	if (!data) {
-		return {
-		  	notFound: true,
-		}
-	}
-	
-	return {
-	  	props: {
-			data,
-		}, // will be passed to the page component as props
-	}
+    return {
+        props: {
+            data,
+        }, // will be passed to the page component as props
+    };
 }
 
-export default Home
+export default Home;

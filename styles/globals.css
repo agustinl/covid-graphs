@@ -1,24 +1,136 @@
-html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    background:#fafafa;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+main {
+    margin: 0 auto;
+    padding: 30px;
+    max-width: 1280px;
 }
 
-* {
-  box-sizing: border-box;
+section {
+    background:#FFF;
+    border-radius:10px;
+    box-shadow: 0 0 20px rgb(74 74 74 / 10%);
+    padding:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-top: 50px;
 }
-#components-layout-demo-fixed-sider .logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.2);
+
+section > div {
+    flex-grow:1;
 }
-.site-layout .site-layout-background {
-  background: #fff;
+
+section > div:first-child {
+    width:30%;
+}
+
+h2 {
+    font-size:32px;
+    font-weight:700;
+}
+
+h3 {
+    color:#9e9ea7;
+    font-size:16px;
+    font-weight:600;
+    text-transform:uppercase;
+}
+
+.new-cases,
+.per-millon,
+.status {
+    border-top: solid 1px #eaeaea;
+}
+
+.new-cases p {
+    font-weight:500;
+    font-size:16px;    
+}
+
+.new-cases.red p {
+    color:#f00100;
+}
+
+.new-cases.blue p {
+    color:#1890ff;
+}
+
+.new-cases.green p {
+    color:#41e28f;
+}
+
+.per-millon h3 {
+    font-weight:500;
+    font-size:22px;
+}
+
+h4 sup {
+    font-size:12px;
+    color:#9e9ea7;
+    top:-1em;
+}
+
+.status p {
+    font-weight:500;
+    font-size:14px;    
+}
+
+.progress {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: .75rem;
+    background-color: #e9ecef;
+    border-radius: .25rem;
+    width:90%;
+}
+
+.progress-bar {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+}
+
+header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+header .info  {    
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+header img {
+    width:30px;
+    height:28px;
+    border-radius:50%;
+}
+
+h1 {
+    margin:0 0 0 10px;
+}
+
+header p {
+    color:#9e9ea7;
+    font-size:14px;
 }
