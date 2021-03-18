@@ -4,7 +4,6 @@ Dashboard to show the stats for Argentina in COVID-19 cases.
 ### Stack
 
 - React Framework: [Next.js](https://nextjs.org/)
-- UI Framework: [Ant.design](https://ant.design/)
 - Deploy: [Vercel](https://vercel.com/)
 - APIs:
   - [corona.lmao.ninja](https://corona.lmao.ninja/)
