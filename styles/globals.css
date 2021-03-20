@@ -134,3 +134,36 @@ header p {
     color:#9e9ea7;
     font-size:14px;
 }
+
+@media only screen and (max-width:780px) {
+
+    h2 {
+        font-size:26px;
+    }
+    
+    h3 {
+        font-size:18px;
+    }
+
+    section > div:first-child {
+        width:100%;
+        margin-bottom:20px;
+    }
+
+    section div {
+        width:100%;
+    }
+    
+    section {
+        flex-direction:column;
+    }
+    
+}
+
+@media only screen and (max-width:530px) {
+
+    header {
+        flex-direction:column;
+    }
+    
+}
